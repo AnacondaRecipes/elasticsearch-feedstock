@@ -1,22 +1,18 @@
 {% set name = "elasticsearch" %}
-{% set version = "7.0.0" %}
-{% set bundle = "tar.gz" %}
-{% set hash_type = "sha256" %}
-{% set hash_val = "cf6cf834b6d0172dac5e704c398a11d1917cf61f15d32b79b1ddad4cd673c4b1" %}
+{% set version = "7.0.4" %}
 
 package:
-  name: {{ name|lower }}
+  name: elasticsearch
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.{{ bundle }}
-  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.{{ bundle }}
-  {{ hash_type }}: {{ hash_val }}
+  url: https://pypi.org/packages/source/e/elasticsearch/elasticsearch-{{ version }}.tar.gz
+  sha256: d9eda8d9696f55d7d394ade625a262985d7af762c0b9305b73d421dace41c4e7
 
 build:
   number: 0
-  script: python -m pip install --no-deps --ignore-installed .
   noarch: python
+  script: python -m pip install --no-deps --ignore-installed .
 
 requirements:
   host:
