@@ -16,14 +16,15 @@ build:
 
 requirements:
   host:
-    - python
+    - python >=3.6
     - pip
 
   run:
-    - python
-    - urllib3 >=1.21.1
+    - python >=3.6
+    - urllib3 >=1.21.1,<2
     - requests >=2.4.0,<3.0.0
     - certifi
+    - aiohttp >=3,<4
 
 test:
   imports:
@@ -34,13 +35,14 @@ test:
 
 about:
   home: https://github.com/elastic/elasticsearch-py
-  license: Apache 2.0
+  license: Apache-2.0
   license_file: LICENSE
   license_family: Apache
-  summary: 'Python client for Elasticsearch'
+  summary: Python client for Elasticsearch
   doc_url: https://elasticsearch-py.readthedocs.io
   dev_url: https://github.com/elastic/elasticsearch-py
 
 extra:
   recipe-maintainers:
-    - pmlandwehr
+    - ahlaw
+    - sethmlarson
