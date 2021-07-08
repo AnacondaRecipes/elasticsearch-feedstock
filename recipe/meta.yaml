@@ -34,6 +34,11 @@ test:
     - elasticsearch.client
     - elasticsearch.connection
     - elasticsearch.helpers
+  requires:
+    - pip
+  commands:
+    - pip check
+
 
 about:
   home: https://github.com/elastic/elasticsearch-py
