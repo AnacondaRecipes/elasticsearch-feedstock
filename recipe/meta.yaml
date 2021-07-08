@@ -1,5 +1,5 @@
 {% set name = "elasticsearch" %}
-{% set version = "7.13.2" %}
+{% set version = "7.13.3" %}
 
 package:
   name: elasticsearch
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/e/elasticsearch/elasticsearch-{{ version }}.tar.gz
-  sha256: fd8b3a267da279ae78f7923c549d488403cdbf83a98299bb130feb832d014b8f
+  sha256: d539d82552804b3d41033377b9adf11c39c749ee1764af3d74b56f42177e3281
 
 build:
   number: 0
@@ -34,6 +34,11 @@ test:
     - elasticsearch.client
     - elasticsearch.connection
     - elasticsearch.helpers
+  requires:
+    - pip
+  commands:
+    - pip check
+
 
 about:
   home: https://github.com/elastic/elasticsearch-py
