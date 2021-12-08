@@ -1,5 +1,5 @@
 {% set name = "elasticsearch" %}
-{% set version = "7.13.3" %}
+{% set version = "7.16.0" %}
 
 package:
   name: elasticsearch
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://pypi.org/packages/source/e/elasticsearch/elasticsearch-{{ version }}.tar.gz
-  sha256: d539d82552804b3d41033377b9adf11c39c749ee1764af3d74b56f42177e3281
+  sha256: d7f8665715ad80e3e99e42388bcc49c1b06162f72acfa1f8febe2baf5570b0ed
 
 build:
   number: 0
