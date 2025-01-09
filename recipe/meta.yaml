@@ -1,5 +1,5 @@
 {% set name = "elasticsearch" %}
-{% set version = "7.13.3" %}
+{% set version = "8.17.0" %}
 
 package:
   name: elasticsearch
@@ -7,26 +7,26 @@ package:
 
 source:
   url: https://pypi.org/packages/source/e/elasticsearch/elasticsearch-{{ version }}.tar.gz
-  sha256: d539d82552804b3d41033377b9adf11c39c749ee1764af3d74b56f42177e3281
+  sha256: c1069bf2204ba8fab29ff00b2ce6b37324b2cc6ff593283b97df43426ec13053
 
 build:
+  skip: true  # [py<38]
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install --no-deps --ignore-installed .
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
 requirements:
   host:
-    - python >=3.6
+    - python
     - pip
-    - setuptools
-    - wheel
+    - hatchling
 
   run:
-    - python >=3.6
+    - python
     - urllib3 >=1.21.1,<2
     - requests >=2.4.0,<3.0.0
     - certifi
     - aiohttp >=3,<4
+    - elastic-transport >=8.15.1,<9
 
 test:
   imports:
@@ -44,7 +44,9 @@ about:
   home: https://github.com/elastic/elasticsearch-py
   license: Apache-2.0
   license_file: LICENSE
-  license_family: Apache
+
+  description: |
+    Official low-level client for Elasticsearch. Its goal is to provide common ground for all Elasticsearch-related code in Python; because of this it tries to be opinion-free and very extendable.
   summary: Python client for Elasticsearch
   doc_url: https://elasticsearch-py.readthedocs.io
   dev_url: https://github.com/elastic/elasticsearch-py
