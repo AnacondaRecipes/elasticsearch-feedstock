@@ -43,7 +43,7 @@ about:
   home: https://github.com/elastic/elasticsearch-py
   license: Apache-2.0
   license_file: LICENSE
-
+  license_family: Apache
   description: |
     Official low-level client for Elasticsearch. Its goal is to provide common ground for all Elasticsearch-related code in Python; because of this it tries to be opinion-free and very extendable.
   summary: Python client for Elasticsearch
