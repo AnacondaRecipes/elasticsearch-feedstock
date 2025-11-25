@@ -1,5 +1,5 @@
 {% set name = "elasticsearch" %}
-{% set version = "8.17.0" %}
+{% set version = "9.2.0" %}
 
 package:
   name: elasticsearch
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://pypi.org/packages/source/e/elasticsearch/elasticsearch-{{ version }}.tar.gz
-  sha256: c1069bf2204ba8fab29ff00b2ce6b37324b2cc6ff593283b97df43426ec13053
+  sha256: 99656baa34b10130402b6c38429feddf7aee1c3247566e8f95f0d0267fe9f9ab
 
 build:
-  skip: true  # [py<38]
+  skip: true  # [py<310]
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
 
@@ -19,19 +19,24 @@ requirements:
     - python
     - pip
     - hatchling
-
   run:
     - python
     - urllib3 >=1.21.1,<2
     - requests >=2.4.0,<3.0.0
     - certifi
     - aiohttp >=3,<4
-    - elastic-transport >=8.15.1,<9
+    - elastic-transport >=9.2.0,<10
+    - python-dateutil
+    - typing_extensions
+    - sniffio
+    - anyio
   run_constrained:
     - orjson >=3
     - pyarrow >=1
     - numpy >=1
     - simsimd >=3
+    - aiohttp >=3,<4
+    - requests >=2.4.0,!=2.32.2,<3.0.0
 
 test:
   imports:
@@ -42,7 +47,6 @@ test:
     - pip
   commands:
     - pip check
-
 
 about:
   home: https://github.com/elastic/elasticsearch-py
