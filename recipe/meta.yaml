@@ -2,12 +2,12 @@
 {% set version = "9.2.0" %}
 
 package:
-  name: elasticsearch
+  name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.org/packages/source/e/elasticsearch/elasticsearch-{{ version }}.tar.gz
-  sha256: 99656baa34b10130402b6c38429feddf7aee1c3247566e8f95f0d0267fe9f9ab
+  url: https://github.com/elastic/{{ name }}-py/archive/refs/tags/v{{ version }}.tar.gz
+  sha256: e2e6a5d609e1b07c739dab907c4d10eb0eae8ca4476333217232045cb9550f08
 
 build:
   skip: true  # [py<310]
@@ -21,32 +21,41 @@ requirements:
     - hatchling
   run:
     - python
-    - urllib3 >=1.21.1,<2
-    - requests >=2.4.0,<3.0.0
-    - certifi
-    - aiohttp >=3,<4
     - elastic-transport >=9.2.0,<10
     - python-dateutil
     - typing_extensions
     - sniffio
     - anyio
   run_constrained:
+    - aiohttp >=3,<4
+    - requests >=2.4.0,!=2.32.2,<3.0.0
     - orjson >=3
     - pyarrow >=1
     - numpy >=1
     - simsimd >=3
-    - aiohttp >=3,<4
-    - requests >=2.4.0,!=2.32.2,<3.0.0
 
 test:
+  source_files:
+    - test_elasticsearch
   imports:
     - elasticsearch
     - elasticsearch.client
     - elasticsearch.compat
   requires:
     - pip
+    - pytest
+    - pytz
+    - requests
+    - pydantic
+    - pyyaml
+    - orjson
+    - trio
+    - pytest-asyncio
+    - aiohttp
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - pytest -v test_elasticsearch
 
 about:
   home: https://github.com/elastic/elasticsearch-py
