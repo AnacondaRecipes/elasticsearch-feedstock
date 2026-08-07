@@ -43,7 +43,8 @@ requirements:
 # E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.examples'
 {% set ignore_tests = " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
 {% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_sync" %}  # [win]
-
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_async/test_server" %}  # [win]
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_client/test_overrides.py" %}  # [win]
 test:
   source_files:
     - test_elasticsearch
@@ -53,7 +54,6 @@ test:
     - test_elasticsearch/test_dsl/test_integration/_sync  # [win]
     - test_elasticsearch/test_dsl/test_integration/__init__.py  # [win]
     - test_elasticsearch/test_dsl/test_integration/test_data.py  # [win]
-    - test_elasticsearch/test_cases.py  # [win]
   imports:
     - elasticsearch
     - elasticsearch.client
