@@ -1,13 +1,8 @@
 {% set name = "elasticsearch" %}
 {% set version = "9.4.1" %}
-{% set ignore_tests = "" %}
-{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
-{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_sync" %}  # [win]
 
-# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.async_examples'
-# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.examples'
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
@@ -32,12 +27,23 @@ requirements:
     - sniffio
     - anyio
   run_constrained:
+    # async
     - aiohttp >=3,<4
+    # requests
     - requests >=2.4.0,!=2.32.2,<3.0.0
+    # orjson
     - orjson >=3
+    # pyarrow
     - pyarrow >=1
+    # vectorstore_mmr
     - numpy >=1
     - simsimd >=3
+
+# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.async_examples'
+# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.examples'
+{% set ignore_tests = "" %}
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_sync" %}  # [win]
 
 test:
   source_files:
@@ -57,10 +63,11 @@ test:
     - trio
     - pytest-asyncio
     - aiohttp
+    - numpy
   commands:
     - pip check
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v {{ ignore_tests }} test_elasticsearch
+    - pytest -vv {{ ignore_tests }} test_elasticsearch
 
 about:
   home: https://github.com/elastic/elasticsearch-py
