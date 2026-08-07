@@ -41,13 +41,18 @@ requirements:
 
 # E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.async_examples'
 # E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.examples'
-{% set ignore_tests = "" %}
-{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
+{% set ignore_tests = " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
 {% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_sync" %}  # [win]
 
 test:
   source_files:
     - test_elasticsearch
+    - test_elasticsearch/utils.py  # [win]
+    - test_elasticsearch/test_dsl/test_integration/_async  # [win]
+    - test_elasticsearch/test_dsl/test_integration/_sync  # [win]
+    - test_elasticsearch/test_dsl/test_integration/__init__.py  # [win]
+    - test_elasticsearch/test_dsl/test_integration/test_data.py  # [win]
+    - test_elasticsearch/test_cases.py  # [win]
   imports:
     - elasticsearch
     - elasticsearch.client
@@ -66,8 +71,10 @@ test:
     - numpy
   commands:
     - pip check
+    - dir /s test_elasticsearch\utils.py  # [win]
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -vv {{ ignore_tests }} test_elasticsearch
+    - pytest -vv test_elasticsearch  # [not win]
+    - python -m pytest --import-mode=importlib -vv {{ ignore_tests }} test_elasticsearch  # [win]
 
 about:
   home: https://github.com/elastic/elasticsearch-py
