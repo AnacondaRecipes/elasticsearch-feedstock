@@ -47,6 +47,7 @@ requirements:
 test:
   source_files:
     - test_elasticsearch
+    # By some reason the tests fail to import these modules on Windows on CI
     - test_elasticsearch/utils.py  # [win]
     - test_elasticsearch/test_dsl/test_integration/_async  # [win]
     - test_elasticsearch/test_dsl/test_integration/_sync  # [win]
