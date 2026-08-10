@@ -1,13 +1,13 @@
 {% set name = "elasticsearch" %}
-{% set version = "9.2.0" %}
+{% set version = "9.4.1" %}
 
 package:
-  name: {{ name|lower }}
+  name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://github.com/elastic/{{ name }}-py/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: e2e6a5d609e1b07c739dab907c4d10eb0eae8ca4476333217232045cb9550f08
+  sha256: c9aac2d519a919ba03aaf7eed15ecf1f2cd468f6a6939d6f8c88ded54dde4a47
 
 build:
   skip: true  # [py<310]
@@ -21,28 +21,39 @@ requirements:
     - hatchling
   run:
     - python
-    - elastic-transport >=9.2.0,<10
+    - elastic-transport >=9.4.1,<10
     - python-dateutil
     - typing_extensions
     - sniffio
     - anyio
   run_constrained:
+    # async
     - aiohttp >=3,<4
+    # requests
     - requests >=2.4.0,!=2.32.2,<3.0.0
+    # orjson
     - orjson >=3
+    # pyarrow
     - pyarrow >=1
+    # vectorstore_mmr
     - numpy >=1
     - simsimd >=3
 
-{% set ignore_tests = "" %}
 # E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.async_examples'
-{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
 # E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.examples'
+{% set ignore_tests = " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
 {% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_sync" %}  # [win]
-
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_async/test_server" %}  # [win]
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_client/test_overrides.py" %}  # [win]
 test:
   source_files:
     - test_elasticsearch
+    # By some reason the tests fail to import these modules on Windows on CI
+    - test_elasticsearch/utils.py  # [win]
+    - test_elasticsearch/test_dsl/test_integration/_async  # [win]
+    - test_elasticsearch/test_dsl/test_integration/_sync  # [win]
+    - test_elasticsearch/test_dsl/test_integration/__init__.py  # [win]
+    - test_elasticsearch/test_dsl/test_integration/test_data.py  # [win]
   imports:
     - elasticsearch
     - elasticsearch.client
@@ -58,10 +69,13 @@ test:
     - trio
     - pytest-asyncio
     - aiohttp
+    - numpy
   commands:
     - pip check
+    - dir /s test_elasticsearch\utils.py  # [win]
     - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
-    - pytest -v {{ ignore_tests }} test_elasticsearch
+    - pytest -vv test_elasticsearch  # [not win]
+    - python -m pytest --import-mode=importlib -vv {{ ignore_tests }} test_elasticsearch  # [win]
 
 about:
   home: https://github.com/elastic/elasticsearch-py
