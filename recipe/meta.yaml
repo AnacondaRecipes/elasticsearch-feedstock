@@ -1,13 +1,19 @@
 {% set name = "elasticsearch" %}
-{% set version = "9.4.1" %}
+{% set version = "9.5.0" %}
+{% set ignore_tests = " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_sync" %}  # [win]
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_async/test_server" %}  # [win]
+{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_client/test_overrides.py" %}  # [win]
 
+# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.async_examples'
+# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.examples'
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
   url: https://github.com/elastic/{{ name }}-py/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: c9aac2d519a919ba03aaf7eed15ecf1f2cd468f6a6939d6f8c88ded54dde4a47
+  sha256: 878e8cb1b74a472ff0a8565cd2fdc6987267ace18758ad88acf6481611cff950
 
 build:
   skip: true  # [py<310]
@@ -39,12 +45,6 @@ requirements:
     - numpy >=1
     - simsimd >=3
 
-# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.async_examples'
-# E   ModuleNotFoundError: No module named 'test_elasticsearch.test_dsl.test_integration.test_examples.examples'
-{% set ignore_tests = " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_async" %}  # [win]
-{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_dsl/test_integration/test_examples/_sync" %}  # [win]
-{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_async/test_server" %}  # [win]
-{% set ignore_tests = ignore_tests + " --ignore=test_elasticsearch/test_client/test_overrides.py" %}  # [win]
 test:
   source_files:
     - test_elasticsearch
