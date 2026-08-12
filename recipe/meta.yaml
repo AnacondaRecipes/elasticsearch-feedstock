@@ -1,5 +1,5 @@
 {% set name = "elasticsearch" %}
-{% set version = "9.4.1" %}
+{% set version = "9.5.0" %}
 
 package:
   name: {{ name }}
@@ -7,17 +7,17 @@ package:
 
 source:
   url: https://github.com/elastic/{{ name }}-py/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: c9aac2d519a919ba03aaf7eed15ecf1f2cd468f6a6939d6f8c88ded54dde4a47
+  sha256: 878e8cb1b74a472ff0a8565cd2fdc6987267ace18758ad88acf6481611cff950
 
 build:
-  skip: true  # [py<310]
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  skip: true  # [py<310]
 
 requirements:
   host:
-    - python
     - pip
+    - python
     - hatchling
   run:
     - python
