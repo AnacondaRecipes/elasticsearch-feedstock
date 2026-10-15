@@ -1,5 +1,5 @@
 {% set name = "elasticsearch" %}
-{% set version = "9.5.0" %}
+{% set version = "9.5.1" %}
 
 package:
   name: {{ name }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/elastic/{{ name }}-py/archive/refs/tags/v{{ version }}.tar.gz
-  sha256: 878e8cb1b74a472ff0a8565cd2fdc6987267ace18758ad88acf6481611cff950
+  sha256: 24a856691e1e2a9a023e43e9aef3f20c8f5f8302b6cb315fbf05bfa293114b09
 
 build:
   number: 0
